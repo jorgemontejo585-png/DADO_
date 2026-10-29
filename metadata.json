@@ -1,0 +1,8 @@
+{
+  "name": "DADO - Tienda Streetwear",
+  "description": "Tienda online de ropa urbana y accesorios DADO en Colombia. Catálogo de productos, carrito de compras y panel de administración.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
