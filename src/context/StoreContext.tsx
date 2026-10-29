@@ -18,8 +18,8 @@ interface StoreContextType {
   addProduct: (product: Omit<Product, 'id_producto' | 'activo'>) => number;
   updateProduct: (id: number, product: Partial<Product>) => void;
   toggleProductActive: (id: number) => { nuevoEstado: boolean; nombre: string };
-  login: (email: string) => boolean;
-  register: (data: { nombre: string; email: string; telefono?: string; direccion?: string }) => { success: boolean; message: string };
+  login: (email: string, password?: string) => boolean;
+  register: (data: { nombre: string; email: string; password?: string; telefono?: string; direccion?: string }) => { success: boolean; message: string };
   updateProfile: (data: Partial<User>) => void;
   logout: () => void;
 }
@@ -58,11 +58,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       try {
         return JSON.parse(saved);
       } catch {
-        return INITIAL_USERS[0];
+        return null;
       }
     }
-    // Default to the admin user so previewer immediately has full access
-    return INITIAL_USERS[0];
+    return null;
   });
 
   const [flashMessage, setFlashMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
@@ -243,27 +242,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return { nuevoEstado, nombre };
   };
 
-  const login = (email: string) => {
+  const login = (email: string, password?: string) => {
     const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-    if (user) {
-      setCurrentUser(user);
-      return true;
+    if (!user) {
+      return false;
     }
-    // If not found, create a demo user with that email
-    const nextId = users.length > 0 ? Math.max(...users.map((u) => u.id_usuario)) + 1 : 1;
-    const isNewAdmin = email.toLowerCase().includes('admin');
-    const newUser: User = {
-      id_usuario: nextId,
-      nombre: email.split('@')[0],
-      email: email,
-      rol: isNewAdmin ? 'admin' : 'cliente',
-    };
-    setUsers((prev) => [...prev, newUser]);
-    setCurrentUser(newUser);
+    // Verify password if user has one
+    if (user.password && password && user.password !== password) {
+      return false;
+    }
+    setCurrentUser(user);
     return true;
   };
 
-  const register = (data: { nombre: string; email: string; telefono?: string; direccion?: string }) => {
+  const register = (data: { nombre: string; email: string; password?: string; telefono?: string; direccion?: string }) => {
     const existing = users.find((u) => u.email.toLowerCase() === data.email.toLowerCase());
     if (existing) {
       return { success: false, message: 'Este correo ya está registrado.' };
@@ -274,6 +266,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id_usuario: nextId,
       nombre: data.nombre,
       email: data.email,
+      password: data.password || '123456',
       telefono: data.telefono,
       direccion: data.direccion,
       rol: isNewAdmin ? 'admin' : 'cliente',

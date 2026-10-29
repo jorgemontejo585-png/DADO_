@@ -65,6 +65,7 @@ export const INITIAL_USERS: User[] = [
     id_usuario: 1,
     nombre: 'Administrador',
     email: 'admin@boxesya.com',
+    password: 'admin123',
     telefono: '3001234567',
     direccion: 'Calle 100 #15-20, Bogotá',
     rol: 'admin',

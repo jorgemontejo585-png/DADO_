@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StoreProvider } from './context/StoreContext';
+import { StoreProvider, useStore } from './context/StoreContext';
 import { Nav } from './components/Nav';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -53,25 +53,37 @@ export const AppContent: React.FC = () => {
   }, []);
 
   const isAdminRoute = currentRoute.startsWith('admin');
+  const { currentUser } = useStore();
 
   return (
     <div className={`dado-root ${currentRoute !== 'home' ? 'module-page' : ''}`} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Nav currentRoute={currentRoute} navigate={navigate} isAdmin={isAdminRoute} />
 
       <div style={{ flex: 1 }}>
-        {currentRoute === 'home' && <Home navigate={navigate} />}
-        {currentRoute === 'products' && <Products navigate={navigate} initialCategory={routeParams.category || 0} />}
-        {currentRoute === 'product-detail' && <ProductDetail productId={routeParams.id} navigate={navigate} />}
-        {currentRoute === 'cart' && <Cart navigate={navigate} />}
-        {currentRoute === 'checkout' && <Checkout navigate={navigate} />}
-        {currentRoute === 'orders' && <Orders navigate={navigate} />}
-        {currentRoute === 'profile' && <Profile navigate={navigate} />}
-        {currentRoute === 'login' && <Login navigate={navigate} />}
-        {currentRoute === 'register' && <Register navigate={navigate} />}
-        {currentRoute === 'nosotros' && <Nosotros navigate={navigate} />}
-        {currentRoute === 'admin-products' && <AdminProducts navigate={navigate} />}
-        {currentRoute === 'admin-add' && <AdminAdd navigate={navigate} />}
-        {currentRoute === 'admin-edit' && <AdminEdit productId={routeParams.id} navigate={navigate} />}
+        {isAdminRoute && currentUser?.rol !== 'admin' ? (
+          <main className="module-container" style={{ maxWidth: '500px' }}>
+            <div className="message message-error">
+              Acceso restringido: Debes iniciar sesión con una cuenta de administrador para acceder a este panel.
+            </div>
+            <Login navigate={navigate} />
+          </main>
+        ) : (
+          <>
+            {currentRoute === 'home' && <Home navigate={navigate} />}
+            {currentRoute === 'products' && <Products navigate={navigate} initialCategory={routeParams.category || 0} />}
+            {currentRoute === 'product-detail' && <ProductDetail productId={routeParams.id} navigate={navigate} />}
+            {currentRoute === 'cart' && <Cart navigate={navigate} />}
+            {currentRoute === 'checkout' && <Checkout navigate={navigate} />}
+            {currentRoute === 'orders' && <Orders navigate={navigate} />}
+            {currentRoute === 'profile' && <Profile navigate={navigate} />}
+            {currentRoute === 'login' && <Login navigate={navigate} />}
+            {currentRoute === 'register' && <Register navigate={navigate} />}
+            {currentRoute === 'nosotros' && <Nosotros navigate={navigate} />}
+            {currentRoute === 'admin-products' && <AdminProducts navigate={navigate} />}
+            {currentRoute === 'admin-add' && <AdminAdd navigate={navigate} />}
+            {currentRoute === 'admin-edit' && <AdminEdit productId={routeParams.id} navigate={navigate} />}
+          </>
+        )}
       </div>
 
       <Footer />

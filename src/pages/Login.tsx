@@ -17,7 +17,7 @@ export const Login: React.FC<LoginProps> = ({ navigate }) => {
       setErrorMsg('Completa todos los campos.');
       return;
     }
-    const success = login(email.trim());
+    const success = login(email.trim(), password);
     if (success) {
       navigate('home');
     } else {
@@ -25,9 +25,10 @@ export const Login: React.FC<LoginProps> = ({ navigate }) => {
     }
   };
 
-  const handleQuickLogin = (demoEmail: string) => {
-    login(demoEmail);
-    navigate('home');
+  const fillCredentials = (demoEmail: string, demoPass: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPass);
+    setErrorMsg('');
   };
 
   return (
@@ -74,24 +75,16 @@ export const Login: React.FC<LoginProps> = ({ navigate }) => {
 
           <div style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid #222' }}>
             <span style={{ fontSize: '11px', color: '#777', display: 'block', marginBottom: '8px' }}>
-              Acceso rápido de prueba:
+              Credenciales de prueba (clic para autocompletar):
             </span>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <button
                 type="button"
                 className="module-btn"
                 style={{ fontSize: '11px', padding: '6px 10px', background: '#333', color: '#ffd700' }}
-                onClick={() => handleQuickLogin('admin@boxesya.com')}
+                onClick={() => fillCredentials('admin@boxesya.com', 'admin123')}
               >
-                Cuenta Administrador
-              </button>
-              <button
-                type="button"
-                className="module-btn"
-                style={{ fontSize: '11px', padding: '6px 10px', background: '#333', color: '#ccc' }}
-                onClick={() => handleQuickLogin('cliente@dado.co')}
-              >
-                Cuenta Cliente
+                Admin (admin@boxesya.com / admin123)
               </button>
             </div>
           </div>

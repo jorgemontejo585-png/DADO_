@@ -45,6 +45,7 @@ export interface User {
   id_usuario: number;
   nombre: string;
   email: string;
+  password?: string;
   telefono?: string;
   direccion?: string;
   rol: 'cliente' | 'admin';
