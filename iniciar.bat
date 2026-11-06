@@ -1,8 +1,6 @@
 @echo off
 cd /d "%~dp0"
-echo ==============================================
-echo     INICIANDO TIENDA DADO STREETWEAR
-echo ==============================================
-echo.
-call npx vite --open --port 3000
+echo Iniciando tienda DADO...
+start /b cmd /c "timeout /t 2 /nobreak >nul && start http://localhost:3000"
+call npm run dev
 pause
