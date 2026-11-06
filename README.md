@@ -12,8 +12,7 @@ Tienda web de comercio electrónico moderna, rápida y adaptable, construida con
 ### Pasos de instalación y ejecución
 
 1. **Descargar el código:**
-   - En la parte superior de Google AI Studio, haz clic en el menú (tres puntos o botón de exportar) y selecciona **Export** o **Download code (.zip)**.
-   - Descomprime el archivo `.zip` en tu carpeta preferida (por ejemplo en tu Escritorio o en Documentos).
+   - Descarga o descomprime el archivo `.zip` en tu carpeta preferida (por ejemplo en tu Escritorio o en Documentos).
 
 2. **Abrir la terminal en la carpeta del proyecto:**
    - Abre la carpeta descomprimida en tu explorador de archivos.
